@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cerebro – Holographic Innovation Agent</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+
+:root {
+  --black: #030508;
+  --red: #e62222;
+  --green: #00ff88;
+  --cyan: #00d4ff;
+  --white: #f0f8ff;
+  --dim: rgba(0,212,255,0.12);
+  --border-holo: rgba(0,212,255,0.2);
+  --glow-red: 0 0 30px rgba(230,34,34,0.6);
+  --glow-cyan: 0 0 30px rgba(0,212,255,0.5);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: 'Space Mono', monospace;
+  overflow-x: hidden;
+}
+
+/* SCANLINE OVERLAY */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,0.12) 50%),
+    linear-gradient(90deg, rgba(255,0,0,0.015), rgba(0,255,150,0.008), rgba(0,0,255,0.015));
+  background-size: 100% 3px, 4px 100%;
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* GRID BG */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 18px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(3,5,8,0.88);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-holo);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo-icon {
+  width: 36px; height: 36px;
+  filter: drop-shadow(0 0 8px var(--cyan));
+}
+
+.nav-wordmark {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px;
+  letter-spacing: 6px;
+  color: var(--white);
+  text-shadow: 0 0 20px rgba(0,212,255,0.4);
+}
+
+.nav-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--green);
+  text-shadow: 0 0 8px var(--green);
+}
+
+.status-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 10px var(--green);
+  animation: blink 2s ease-in-out infinite;
+}
+
+.nav-cta {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--cyan);
+  text-decoration: none;
+  border: 1px solid var(--cyan);
+  padding: 10px 22px;
+  transition: all 0.3s;
+  text-shadow: 0 0 8px var(--cyan);
+  box-shadow: inset 0 0 0 0 var(--cyan);
+}
+
+.nav-cta:hover {
+  background: var(--cyan);
+  color: var(--black);
+  box-shadow: var(--glow-cyan);
+  text-shadow: none;
+}
+
+/* ===================== HERO ===================== */
+.hero {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 100px 80px 60px;
+  gap: 60px;
+}
+
+.hero-left { display: flex; flex-direction: column; }
+
+.hero-eyebrow {
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--green);
+  text-shadow: 0 0 8px var(--green);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.3s forwards;
+}
+
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(60px, 7vw, 110px);
+  line-height: 0.9;
+  letter-spacing: 2px;
+  margin-bottom: 30px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.5s forwards;
+}
+
+.hero-title .accent { color: var(--red); text-shadow: var(--glow-red); }
+.hero-title .accent-cyan { color: var(--cyan); text-shadow: var(--glow-cyan); }
+
+.hero-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.8;
+  color: rgba(240,248,255,0.55);
+  max-width: 460px;
+  margin-bottom: 44px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.7s forwards;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.9s forwards;
+}
+
+.btn-primary {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  background: var(--red);
+  color: var(--white);
+  border: none;
+  padding: 16px 36px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: var(--glow-red);
+}
+
+.btn-primary:hover {
+  background: #ff3a3a;
+  box-shadow: 0 0 50px rgba(230,34,34,0.7);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--cyan);
+  border: 1px solid var(--cyan);
+  padding: 16px 36px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-shadow: 0 0 8px var(--cyan);
+}
+
+.btn-secondary:hover {
+  background: rgba(0,212,255,0.1);
+  box-shadow: var(--glow-cyan);
+}
+
+/* ===================== HOLOGRAPHIC AGENT VISUAL ===================== */
+.hero-right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  opacity: 0;
+  animation: fadeIn 1.2s ease 1s forwards;
+}
+
+.holo-stage {
+  width: 380px;
+  height: 380px;
+  position: relative;
+}
+
+/* OUTER RINGS */
+.holo-ring {
+  position: absolute;
+  border-radius: 50%;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid var(--cyan);
+}
+
+.holo-ring-1 {
+  width: 360px; height: 360px;
+  border-color: rgba(0,212,255,0.15);
+  border-style: dashed;
+  animation: spin 25s linear infinite;
+}
+
+.holo-ring-2 {
+  width: 300px; height: 300px;
+  border-color: rgba(0,212,255,0.25);
+  animation: spin 18s linear infinite reverse;
+}
+
+.holo-ring-3 {
+  width: 240px; height: 240px;
+  border-color: rgba(230,34,34,0.3);
+  border-style: dashed;
+  animation: spin 12s linear infinite;
+}
+
+.holo-ring-4 {
+  width: 180px; height: 180px;
+  border-color: rgba(0,212,255,0.4);
+  animation: spin 8s linear infinite reverse;
+}
+
+/* ORBIT DOTS */
+.orbit-dot {
+  position: absolute;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 12px var(--cyan);
+  top: 50%; left: 50%;
+  transform-origin: 0 0;
+}
+
+/* CORE */
+.holo-core {
+  position: absolute;
+  width: 100px; height: 100px;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.core-inner {
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ff6666, var(--red) 50%, #8b0000);
+  box-shadow: 0 0 60px rgba(230,34,34,0.8), 0 0 120px rgba(230,34,34,0.3), inset 0 0 30px rgba(255,150,150,0.3);
+  animation: corePulse 3s ease-in-out infinite;
+  position: relative;
+}
+
+.core-inner::after {
+  content: 'C';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 42px;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.9);
+  text-shadow: 0 0 20px white;
+}
+
+.core-ring {
+  position: absolute;
+  border: 2px solid rgba(230,34,34,0.5);
+  border-radius: 50%;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: coreRingPulse 3s ease-in-out infinite;
+}
+
+.cr1 { width: 120px; height: 120px; animation-delay: 0s; }
+.cr2 { width: 145px; height: 145px; animation-delay: 0.5s; border-color: rgba(0,212,255,0.3); }
+
+/* LISTENING STATE */
+.listening .core-inner {
+  background: radial-gradient(circle at 35% 35%, white, rgba(200,230,255,0.9));
+  box-shadow: 0 0 80px rgba(0,212,255,1), 0 0 160px rgba(0,212,255,0.4), inset 0 0 40px rgba(200,230,255,0.5);
+  animation: listenPulse 0.6s ease-in-out infinite;
+}
+
+.listening .holo-ring-2 { border-color: rgba(0,212,255,0.7); }
+.listening .holo-ring-4 { border-color: rgba(0,212,255,0.9); }
+
+/* HOLO PARTICLES */
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: floatParticle linear infinite;
+}
+
+/* DATA LINES */
+.data-line {
+  position: absolute;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  height: 1px;
+  width: 80px;
+  opacity: 0;
+  animation: dataFlash 3s ease-in-out infinite;
+}
+
+/* HOLO PROJECTION BASE */
+.holo-base {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  box-shadow: 0 0 20px var(--cyan);
+  filter: blur(1px);
+}
+
+/* SCAN LINE ON AGENT */
+.scan-line {
+  position: absolute;
+  top: 0; left: 50%; right: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0,212,255,0.8), transparent);
+  transform: translateX(-50%);
+  animation: scan 4s linear infinite;
+  filter: blur(0.5px);
+}
+
+/* CORNER HUD ELEMENTS */
+.hud-corner {
+  position: absolute;
+  width: 24px; height: 24px;
+}
+.hud-corner::before, .hud-corner::after {
+  content: '';
+  position: absolute;
+  background: var(--cyan);
+  box-shadow: 0 0 6px var(--cyan);
+}
+.hud-corner::before { width: 100%; height: 2px; top: 0; }
+.hud-corner::after { width: 2px; height: 100%; top: 0; }
+
+.hud-tl { top: 0; left: 0; }
+.hud-tr { top: 0; right: 0; transform: scaleX(-1); }
+.hud-bl { bottom: 0; left: 0; transform: scaleY(-1); }
+.hud-br { bottom: 0; right: 0; transform: scale(-1); }
+
+/* FLOATING DATA LABELS */
+.data-label {
+  position: absolute;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--cyan);
+  text-shadow: 0 0 6px var(--cyan);
+  opacity: 0.6;
+}
+
+/* ===================== MISSION STRIP ===================== */
+.mission-strip {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--border-holo);
+  border-bottom: 1px solid var(--border-holo);
+  background: rgba(0,212,255,0.03);
+  padding: 80px;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.ms-label {
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--red);
+  text-shadow: var(--glow-red);
+}
+
+.ms-content h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 48px;
+  letter-spacing: 2px;
+  line-height: 1;
+  margin-bottom: 20px;
+  color: var(--white);
+}
+
+.ms-content p {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.8;
+  color: rgba(240,248,255,0.6);
+  max-width: 600px;
+}
+
+/* ===================== STATS ===================== */
+.stats-row {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border-holo);
+}
+
+.stat-cell {
+  background: var(--black);
+  padding: 60px 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s;
+}
+
+.stat-cell:hover { background: rgba(0,212,255,0.04); }
+
+.stat-cell::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--red), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.stat-cell:hover::before { opacity: 1; }
+
+.stat-n {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 72px;
+  line-height: 1;
+  color: var(--cyan);
+  text-shadow: 0 0 30px rgba(0,212,255,0.6);
+}
+
+.stat-l {
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: rgba(240,248,255,0.35);
+  margin-top: 10px;
+}
+
+/* ===================== STEPS ===================== */
+.steps-section {
+  position: relative;
+  z-index: 1;
+  padding: 100px 80px;
+}
+
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 32px;
+  margin-bottom: 64px;
+  border-bottom: 1px solid var(--border-holo);
+  padding-bottom: 28px;
+}
+
+.sec-label {
+  font-size: 9px;
+  letter-spacing: 4px;
+  color: var(--green);
+  text-shadow: 0 0 8px var(--green);
+}
+
+.sec-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 52px;
+  letter-spacing: 2px;
+  color: var(--white);
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  background: var(--border-holo);
+}
+
+.step-card {
+  background: var(--black);
+  padding: 40px 28px;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s;
+}
+
+.step-card:hover { background: rgba(0,212,255,0.04); }
+
+.step-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: var(--red);
+  box-shadow: var(--glow-red);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.3s;
+}
+
+.step-card:hover::after { transform: scaleY(1); }
+
+.step-n {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 64px;
+  color: rgba(0,212,255,0.12);
+  line-height: 1;
+  margin-bottom: 20px;
+}
+
+.step-card h3 {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--cyan);
+  text-shadow: 0 0 8px var(--cyan);
+  margin-bottom: 12px;
+}
+
+.step-card p {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(240,248,255,0.45);
+}
+
+/* ===================== AGENT SECTION ===================== */
+#agent-interface {
+  position: relative;
+  z-index: 1;
+  padding: 60px 80px 100px;
+  border-top: 1px solid var(--border-holo);
+}
+
+.agent-section-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.agent-section-header h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 64px;
+  letter-spacing: 3px;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.agent-section-header p {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: rgba(240,248,255,0.4);
+}
+
+/* MAIN AGENT UI */
+.agent-ui {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 2px;
+  background: var(--border-holo);
+  max-width: 1100px;
+  margin: 0 auto;
+  border: 1px solid var(--border-holo);
+}
+
+/* LEFT - HOLO AGENT PANEL */
+.agent-panel-left {
+  background: var(--black);
+  padding: 40px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  border-right: 1px solid var(--border-holo);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Mini holo stage */
+.mini-holo {
+  width: 160px;
+  height: 160px;
+  position: relative;
+}
+
+.mini-ring {
+  position: absolute;
+  border-radius: 50%;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid var(--cyan);
+}
+
+.mr1 {
+  width: 155px; height: 155px;
+  border-color: rgba(0,212,255,0.15);
+  border-style: dashed;
+  animation: spin 20s linear infinite;
+}
+
+.mr2 {
+  width: 120px; height: 120px;
+  border-color: rgba(0,212,255,0.3);
+  animation: spin 14s linear infinite reverse;
+}
+
+.mr3 {
+  width: 85px; height: 85px;
+  border-color: rgba(230,34,34,0.4);
+  border-style: dashed;
+  animation: spin 9s linear infinite;
+}
+
+.mini-core {
+  position: absolute;
+  width: 54px; height: 54px;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ff6666, var(--red) 50%, #8b0000);
+  box-shadow: 0 0 30px rgba(230,34,34,0.8), 0 0 60px rgba(230,34,34,0.3);
+  animation: corePulse 3s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  color: rgba(255,255,255,0.9);
+  text-shadow: 0 0 10px white;
+}
+
+/* Listening state for mini */
+.agent-listening .mini-core {
+  background: radial-gradient(circle at 35% 35%, white, rgba(200,230,255,0.9));
+  box-shadow: 0 0 40px rgba(0,212,255,1), 0 0 80px rgba(0,212,255,0.4);
+  animation: listenPulse 0.5s ease-in-out infinite;
+}
+
+.agent-listening .mr2 { border-color: rgba(0,212,255,0.7); }
+
+.agent-status-label {
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-align: center;
+}
+
+.status-standby { color: rgba(240,248,255,0.3); }
+.status-active { color: var(--green); text-shadow: 0 0 8px var(--green); }
+.status-listening { color: var(--cyan); text-shadow: 0 0 8px var(--cyan); }
+.status-processing { color: var(--red); text-shadow: var(--glow-red); }
+
+/* Voice waveform */
+.waveform {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  height: 40px;
+}
+
+.wave-bar {
+  width: 3px;
+  background: var(--cyan);
+  box-shadow: 0 0 6px var(--cyan);
+  border-radius: 2px;
+  animation: waveIdle 2s ease-in-out infinite;
+  height: 6px;
+  opacity: 0.4;
+}
+
+.agent-listening .wave-bar {
+  opacity: 1;
+  animation: waveLive 0.4s ease-in-out infinite;
+}
+
+.wave-bar:nth-child(1) { animation-delay: 0s; }
+.wave-bar:nth-child(2) { animation-delay: 0.1s; }
+.wave-bar:nth-child(3) { animation-delay: 0.2s; }
+.wave-bar:nth-child(4) { animation-delay: 0.3s; }
+.wave-bar:nth-child(5) { animation-delay: 0.15s; }
+.wave-bar:nth-child(6) { animation-delay: 0.05s; }
+.wave-bar:nth-child(7) { animation-delay: 0.25s; }
+.wave-bar:nth-child(8) { animation-delay: 0.1s; }
+
+/* Voice btn */
+.voice-btn {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--red);
+  color: var(--red);
+  padding: 14px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-shadow: var(--glow-red);
+}
+
+.voice-btn:hover, .voice-btn.listening {
+  background: rgba(230,34,34,0.1);
+  box-shadow: var(--glow-red);
+}
+
+.voice-btn.listening {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  text-shadow: var(--glow-cyan);
+}
+
+.voice-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.divider-holo {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-holo), transparent);
+}
+
+.mode-tabs {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.mode-tab {
+  flex: 1;
+  padding: 10px 6px;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-align: center;
+  border: 1px solid var(--border-holo);
+  cursor: pointer;
+  transition: all 0.2s;
+  background: transparent;
+  color: rgba(240,248,255,0.3);
+  font-family: 'Space Mono', monospace;
+}
+
+.mode-tab.active {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  text-shadow: 0 0 6px var(--cyan);
+  background: rgba(0,212,255,0.06);
+}
+
+.hud-stats-mini {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hud-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: rgba(240,248,255,0.3);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  padding-bottom: 8px;
+}
+
+.hud-row span:last-child {
+  color: var(--cyan);
+  text-shadow: 0 0 6px var(--cyan);
+}
+
+/* RIGHT - CHAT AREA */
+.agent-panel-right {
+  background: var(--black);
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-topbar {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border-holo);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chat-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: rgba(240,248,255,0.4);
+}
+
+.live-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  animation: blink 2s ease-in-out infinite;
+}
+
+.session-id {
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: rgba(240,248,255,0.2);
+}
+
+.chat-messages {
+  flex: 1;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  overflow-y: auto;
+  max-height: 420px;
+  min-height: 300px;
+}
+
+.msg { display: flex; gap: 12px; animation: fadeUp 0.4s ease; }
+.msg.user { flex-direction: row-reverse; }
+
+.msg-avatar {
+  width: 32px; height: 32px;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.msg-avatar.ai-av {
+  background: rgba(0,212,255,0.1);
+  border: 1px solid var(--border-holo);
+  color: var(--cyan);
+  text-shadow: 0 0 6px var(--cyan);
+}
+
+.msg-avatar.user-av {
+  background: var(--red);
+  color: var(--white);
+  box-shadow: var(--glow-red);
+}
+
+.msg-bubble {
+  max-width: 75%;
+  padding: 12px 16px;
+  font-size: 13px;
+  line-height: 1.6;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+}
+
+.msg.ai .msg-bubble {
+  background: rgba(0,212,255,0.05);
+  border: 1px solid rgba(0,212,255,0.15);
+  color: var(--white);
+  border-radius: 0 10px 10px 10px;
+}
+
+.msg.user .msg-bubble {
+  background: rgba(230,34,34,0.15);
+  border: 1px solid rgba(230,34,34,0.3);
+  color: var(--white);
+  border-radius: 10px 0 10px 10px;
+}
+
+/* ai text glow label */
+.ai-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: var(--cyan);
+  text-shadow: 0 0 6px var(--cyan);
+  margin-bottom: 4px;
+}
+
+.user-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: rgba(230,34,34,0.7);
+  margin-bottom: 4px;
+  text-align: right;
+}
+
+.msg-wrap { display: flex; flex-direction: column; max-width: 75%; }
+.msg.user .msg-wrap { align-items: flex-end; }
+
+.chat-input-area {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border-holo);
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+  background: rgba(0,212,255,0.02);
+}
+
+.chat-input {
+  flex: 1;
+  background: rgba(0,212,255,0.05);
+  border: 1px solid rgba(0,212,255,0.15);
+  color: var(--white);
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  padding: 12px 16px;
+  resize: none;
+  min-height: 48px;
+  max-height: 120px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.chat-input:focus { border-color: rgba(0,212,255,0.5); box-shadow: 0 0 15px rgba(0,212,255,0.1); }
+.chat-input::placeholder { color: rgba(240,248,255,0.2); font-size: 11px; }
+
+.send-btn {
+  background: var(--red);
+  border: none;
+  color: var(--white);
+  padding: 12px 22px;
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+  height: 48px;
+  box-shadow: var(--glow-red);
+}
+
+.send-btn:hover { background: #ff3a3a; }
+.send-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* Typing indicator */
+.typing-row { display: flex; align-items: center; gap: 5px; padding: 4px 0; }
+.typing-row span {
+  width: 5px; height: 5px;
+  background: var(--cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--cyan);
+  animation: bounce 1.2s ease-in-out infinite;
+}
+.typing-row span:nth-child(2) { animation-delay: 0.2s; }
+.typing-row span:nth-child(3) { animation-delay: 0.4s; }
+
+/* ===================== FOOTER ===================== */
+footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--border-holo);
+  padding: 40px 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0,212,255,0.02);
+}
+
+.footer-brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 6px;
+  color: rgba(240,248,255,0.2);
+}
+
+.footer-right {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: rgba(240,248,255,0.2);
+  text-align: right;
+}
+
+/* ===================== ANIMATIONS ===================== */
+@keyframes spin { from { transform: translate(-50%,-50%) rotate(0deg); } to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+@keyframes corePulse {
+  0%, 100% { box-shadow: 0 0 60px rgba(230,34,34,0.8), 0 0 120px rgba(230,34,34,0.3); transform: translate(-50%,-50%) scale(1); }
+  50% { box-shadow: 0 0 80px rgba(230,34,34,1), 0 0 160px rgba(230,34,34,0.4); transform: translate(-50%,-50%) scale(1.05); }
+}
+
+@keyframes listenPulse {
+  0%, 100% { transform: translate(-50%,-50%) scale(1); }
+  50% { transform: translate(-50%,-50%) scale(1.15); }
+}
+
+@keyframes coreRingPulse {
+  0%, 100% { opacity: 0.3; transform: translate(-50%,-50%) scale(1); }
+  50% { opacity: 0.7; transform: translate(-50%,-50%) scale(1.05); }
+}
+
+@keyframes scan {
+  from { top: 0%; }
+  to { top: 100%; }
+}
+
+@keyframes dataFlash {
+  0%, 85%, 100% { opacity: 0; }
+  90%, 95% { opacity: 1; }
+}
+
+@keyframes floatParticle {
+  0% { transform: translateY(0) scale(1); opacity: 0.8; }
+  100% { transform: translateY(-100px) scale(0); opacity: 0; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes bounce {
+  0%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-5px); }
+}
+
+@keyframes waveIdle {
+  0%, 100% { height: 6px; }
+  50% { height: 10px; }
+}
+
+@keyframes waveLive {
+  0%, 100% { height: 6px; }
+  50% { height: 30px; }
+}
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; padding: 100px 28px 60px; }
+  .holo-stage { width: 260px; height: 260px; }
+  .holo-ring-1 { width: 250px; height: 250px; }
+  .holo-ring-2 { width: 200px; height: 200px; }
+  .holo-ring-3 { width: 155px; height: 155px; }
+  .holo-ring-4 { width: 110px; height: 110px; }
+  .mission-strip { grid-template-columns: 1fr; padding: 60px 28px; gap: 32px; }
+  .stats-row { grid-template-columns: 1fr; }
+  .steps-section { padding: 80px 28px; }
+  .steps-grid { grid-template-columns: 1fr 1fr; }
+  #agent-interface { padding: 60px 28px 80px; }
+  .agent-ui { grid-template-columns: 1fr; }
+  .agent-panel-left { border-right: none; border-bottom: 1px solid var(--border-holo); }
+  footer { flex-direction: column; gap: 12px; padding: 40px 28px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <svg class="logo-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M50 10 A40 40 0 0 1 90 50 A40 40 0 0 1 50 90" stroke="white" stroke-width="10" stroke-linecap="round" fill="none"/>
+      <path d="M50 90 A40 40 0 0 1 10 50 A40 40 0 0 1 50 10" stroke="rgba(0,212,255,0.4)" stroke-width="10" stroke-linecap="round" fill="none"/>
+      <circle cx="50" cy="50" r="8" fill="white"/>
+      <circle cx="50" cy="50" r="16" stroke="rgba(0,212,255,0.6)" stroke-width="2" fill="none"/>
+    </svg>
+    <span class="nav-wordmark">CEREBRO</span>
+  </div>
+  <div class="nav-links" style="display:flex;gap:36px;align-items:center;">
+    <a href="index.html" style="font-size:9px;letter-spacing:3px;color:var(--cyan);text-shadow:0 0 8px var(--cyan);text-decoration:none;">HOME</a>
+    <a href="network.html" style="font-size:9px;letter-spacing:3px;color:rgba(240,248,255,0.4);text-decoration:none;transition:color .2s;" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='rgba(240,248,255,0.4)'">THE NETWORK</a>
+    <a href="dashboard.html" style="font-size:9px;letter-spacing:3px;color:rgba(240,248,255,0.4);text-decoration:none;" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='rgba(240,248,255,0.4)'">DASHBOARD</a>
+  </div>
+  <a href="#agent-interface" class="nav-cta">Launch Agent</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">// HBCU INNOVATION NETWORK · EST. 2025</p>
+    <h1 class="hero-title">
+      BRING YOUR<br>
+      <span class="accent">IDEA</span><br>
+      TO <span class="accent-cyan">LIFE</span>
+    </h1>
+    <p class="hero-sub">Cerebro connects elite HBCU candidates across fields to build world-changing businesses. Speak to our AI agent, get funded, and compete on a global scale.</p>
+    <div class="hero-actions">
+      <a href="#agent-interface" class="btn-primary">Talk to the Agent</a>
+      <a href="#how" class="btn-secondary">How It Works</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="holo-stage" id="heroHoloStage">
+      <!-- Scan line -->
+      <div class="scan-line"></div>
+      <!-- HUD corners -->
+      <div class="hud-corner hud-tl"></div>
+      <div class="hud-corner hud-tr"></div>
+      <div class="hud-corner hud-bl"></div>
+      <div class="hud-corner hud-br"></div>
+
+      <!-- Rings -->
+      <div class="holo-ring holo-ring-1"></div>
+      <div class="holo-ring holo-ring-2"></div>
+      <div class="holo-ring holo-ring-3"></div>
+      <div class="holo-ring holo-ring-4"></div>
+
+      <!-- Orbit dots -->
+      <div id="orbitContainer"></div>
+
+      <!-- Core -->
+      <div class="holo-core">
+        <div class="core-ring cr2"></div>
+        <div class="core-ring cr1"></div>
+        <div class="core-inner"></div>
+      </div>
+
+      <!-- Data labels -->
+      <div class="data-label" style="top:10px;left:10px;">SYS.ACTIVE</div>
+      <div class="data-label" style="bottom:10px;right:10px;">INTAKE.READY</div>
+      <div class="data-label" style="top:50%;right:0;transform:translateY(-50%);">◈</div>
+
+      <!-- Holo base -->
+      <div class="holo-base"></div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION -->
+<div class="mission-strip">
+  <div class="ms-label">// OUR MISSION</div>
+  <div class="ms-content">
+    <h2>ELITE MINDS.<br>GLOBAL SCALE.</h2>
+    <p>Bring together elite HBCU candidates in different fields to work on new world-changing projects together. We plan to create thousands of high quality jobs within Black communities through innovation and the creation of new businesses that can compete on a global scale.</p>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-row">
+  <div class="stat-cell">
+    <div class="stat-n">100+</div>
+    <div class="stat-l">HBCUS NATIONWIDE</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-n">300K+</div>
+    <div class="stat-l">STUDENTS ENROLLED</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-n">∞</div>
+    <div class="stat-l">IDEAS WAITING TO LAUNCH</div>
+  </div>
+</div>
+
+<!-- STEPS -->
+<section class="steps-section" id="how">
+  <div class="section-header">
+    <span class="sec-label">// PROCESS</span>
+    <h2 class="sec-title">HOW IT WORKS</h2>
+  </div>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-n">01</div>
+      <h3>APPROACH TERMINAL</h3>
+      <p>Find a Cerebro terminal station at your HBCU and activate the holographic agent.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-n">02</div>
+      <h3>SPEAK YOUR VISION</h3>
+      <p>Use voice or text. Tell the agent your name, major, university, and pitch your business idea.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-n">03</div>
+      <h3>PROFILE GENERATED</h3>
+      <p>Our AI compiles your answers into a professional innovator profile for the Cerebro team.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-n">04</div>
+      <h3>GET CONNECTED</h3>
+      <p>Cerebro reviews promising ideas and connects founders with funding and resources.</p>
+    </div>
+  </div>
+</section>
+
+<!-- AGENT INTERFACE -->
+<section id="agent-interface">
+  <div class="agent-section-header">
+    <span class="sec-label" style="display:block;margin-bottom:12px;">// CEREBRO AI AGENT</span>
+    <h2>SUBMIT YOUR IDEA</h2>
+    <p>TYPE OR SPEAK WITH THE AGENT — YOUR INNOVATOR PROFILE IS AUTO-GENERATED</p>
+  </div>
+
+  <div class="agent-ui" id="agentUI">
+    <!-- LEFT PANEL -->
+    <div class="agent-panel-left" id="agentPanelLeft">
+      <!-- Mini hologram -->
+      <div class="mini-holo">
+        <div class="mini-ring mr1"></div>
+        <div class="mini-ring mr2"></div>
+        <div class="mini-ring mr3"></div>
+        <div class="mini-core" id="miniCore">C</div>
+      </div>
+
+      <div class="agent-status-label status-standby" id="agentStatusLabel">AGENT STANDBY</div>
+
+      <div class="waveform" id="waveform">
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+        <div class="wave-bar"></div>
+      </div>
+
+      <div class="divider-holo"></div>
+
+      <div class="mode-tabs">
+        <div class="mode-tab active" id="textTab" onclick="setMode('text')">TEXT</div>
+        <div class="mode-tab" id="voiceTab" onclick="setMode('voice')">VOICE</div>
+      </div>
+
+      <button class="voice-btn" id="voiceBtn" onclick="toggleVoice()" style="display:none;">
+        🎤 HOLD TO SPEAK
+      </button>
+
+      <div class="divider-holo"></div>
+
+      <div class="hud-stats-mini">
+        <div class="hud-row"><span>SESSION</span><span id="sessionId">--</span></div>
+        <div class="hud-row"><span>MODE</span><span id="modeDisplay">TEXT</span></div>
+        <div class="hud-row"><span>STATUS</span><span id="statusDisplay">READY</span></div>
+        <div class="hud-row"><span>MSGS</span><span id="msgCount">0</span></div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL - CHAT -->
+    <div class="agent-panel-right">
+      <div class="chat-topbar">
+        <div class="chat-topbar-left">
+          <div class="live-dot"></div>
+          CEREBRO INTELLIGENCE AGENT
+        </div>
+        <div class="session-id" id="sessionDisplay">SESSION: --</div>
+      </div>
+
+      <div class="chat-messages" id="chatMessages">
+        <div class="msg ai">
+          <div class="msg-avatar ai-av">C</div>
+          <div class="msg-wrap">
+            <div class="ai-label">CEREBRO AGENT</div>
+            <div class="msg-bubble">
+              System initialized. Welcome to Cerebro — I'm your innovation intake agent. I'm here to build your innovator profile and capture your business idea for funding review.<br><br>
+              Let's begin. <strong>What is your full name?</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-input-area" id="textInputArea">
+        <textarea class="chat-input" id="userInput" placeholder="Enter your response..." rows="1"></textarea>
+        <button class="send-btn" id="sendBtn" onclick="sendMessage()">SEND →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">CEREBRO</div>
+  <div class="footer-right">
+    © 2025 CEREBRO INNOVATION NETWORK<br>
+    <span style="opacity:0.5">EMPOWERING HBCU EXCELLENCE</span>
+  </div>
+</footer>
+
+<script>
+// ── Session ID
+const sessionId = 'CRB-' + Math.random().toString(36).substr(2,6).toUpperCase();
+document.getElementById('sessionId').textContent = sessionId;
+document.getElementById('sessionDisplay').textContent = 'SESSION: ' + sessionId;
+
+// ── API — routes through our backend proxy
+const API_URL = "/api/chat";
+let profileSaved = false;
+
+let conversationHistory = [];
+let isProcessing = false;
+let msgCount = 0;
+let currentMode = 'text';
+
+// ── DOM refs
+const chatMessages = document.getElementById('chatMessages');
+const userInput = document.getElementById('userInput');
+const sendBtn = document.getElementById('sendBtn');
+const agentPanelLeft = document.getElementById('agentPanelLeft');
+const agentStatusLabel = document.getElementById('agentStatusLabel');
+const waveform = document.getElementById('waveform');
+
+// ── Mode switching
+function setMode(mode) {
+  currentMode = mode;
+  document.getElementById('textTab').classList.toggle('active', mode === 'text');
+  document.getElementById('voiceTab').classList.toggle('active', mode === 'voice');
+  document.getElementById('textInputArea').style.display = mode === 'text' ? 'flex' : 'none';
+  document.getElementById('voiceBtn').style.display = mode === 'voice' ? 'block' : 'none';
+  document.getElementById('modeDisplay').textContent = mode.toUpperCase();
+}
+
+// ── Set agent state
+function setAgentState(state) {
+  agentPanelLeft.classList.remove('agent-listening');
+  agentStatusLabel.className = 'agent-status-label';
+  
+  const statusEl = document.getElementById('statusDisplay');
+  if (state === 'listening') {
+    agentPanelLeft.classList.add('agent-listening');
+    agentStatusLabel.classList.add('status-listening');
+    agentStatusLabel.textContent = 'LISTENING...';
+    statusEl.textContent = 'LISTEN';
+  } else if (state === 'processing') {
+    agentStatusLabel.classList.add('status-processing');
+    agentStatusLabel.textContent = 'PROCESSING...';
+    statusEl.textContent = 'PROCESS';
+  } else if (state === 'active') {
+    agentStatusLabel.classList.add('status-active');
+    agentStatusLabel.textContent = 'AGENT ACTIVE';
+    statusEl.textContent = 'ACTIVE';
+  } else {
+    agentStatusLabel.classList.add('status-standby');
+    agentStatusLabel.textContent = 'AGENT STANDBY';
+    statusEl.textContent = 'READY';
+  }
+}
+
+// ── Append message
+function appendMessage(role, text) {
+  const msg = document.createElement('div');
+  msg.className = `msg ${role}`;
+
+  const avatar = document.createElement('div');
+  avatar.className = `msg-avatar ${role === 'ai' ? 'ai-av' : 'user-av'}`;
+  avatar.textContent = role === 'ai' ? 'C' : 'U';
+
+  const wrap = document.createElement('div');
+  wrap.className = 'msg-wrap';
+
+  const label = document.createElement('div');
+  label.className = role === 'ai' ? 'ai-label' : 'user-label';
+  label.textContent = role === 'ai' ? 'CEREBRO AGENT' : 'STUDENT';
+
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble';
+  bubble.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+
+  wrap.appendChild(label);
+  wrap.appendChild(bubble);
+  msg.appendChild(avatar);
+  msg.appendChild(wrap);
+  chatMessages.appendChild(msg);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+
+  msgCount++;
+  document.getElementById('msgCount').textContent = msgCount;
+}
+
+// ── Typing indicator
+function showTyping() {
+  const msg = document.createElement('div');
+  msg.className = 'msg ai';
+  msg.id = 'typingMsg';
+  const av = document.createElement('div');
+  av.className = 'msg-avatar ai-av';
+  av.textContent = 'C';
+  const wrap = document.createElement('div');
+  wrap.className = 'msg-wrap';
+  const label = document.createElement('div');
+  label.className = 'ai-label';
+  label.textContent = 'CEREBRO AGENT';
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble';
+  bubble.innerHTML = '<div class="typing-row"><span></span><span></span><span></span></div>';
+  wrap.appendChild(label);
+  wrap.appendChild(bubble);
+  msg.appendChild(av);
+  msg.appendChild(wrap);
+  chatMessages.appendChild(msg);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function removeTyping() {
+  const el = document.getElementById('typingMsg');
+  if (el) el.remove();
+}
+
+// ── Send message
+async function sendMessage() {
+  const text = userInput.value.trim();
+  if (!text || isProcessing) return;
+
+  isProcessing = true;
+  sendBtn.disabled = true;
+  userInput.value = '';
+  userInput.style.height = 'auto';
+
+  appendMessage('user', text);
+  conversationHistory.push({ role: 'user', content: text });
+
+  setAgentState('processing');
+  showTyping();
+
+  try {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId, messages: conversationHistory })
+    });
+
+    const data = await response.json();
+    removeTyping();
+
+    const aiText = data.reply || "Connection error. Please try again.";
+    appendMessage('ai', aiText);
+    conversationHistory.push({ role: 'assistant', content: aiText });
+    setAgentState('active');
+
+    // If the profile summary was just generated, auto-save it
+    if (data.profileComplete && !profileSaved) {
+      profileSaved = true;
+      try {
+        await fetch('/api/submissions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionId, transcript: conversationHistory, profile: data.profile })
+        });
+        appendMessage('ai', '✅ **Your profile has been saved!** The Cerebro team will review your submission and reach out soon. Welcome to the network.');
+      } catch(e) { /* silent */ }
+    }
+
+  } catch (err) {
+    removeTyping();
+    appendMessage('ai', "Network error. Please check your connection and try again.");
+    setAgentState('standby');
+  }
+
+  isProcessing = false;
+  sendBtn.disabled = false;
+  userInput.focus();
+}
+
+// ── Input events
+userInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+});
+
+userInput.addEventListener('input', () => {
+  userInput.style.height = 'auto';
+  userInput.style.height = Math.min(userInput.scrollHeight, 120) + 'px';
+});
+
+userInput.addEventListener('focus', () => setAgentState('active'));
+userInput.addEventListener('blur', () => { if (!isProcessing) setAgentState('standby'); });
+
+// ── VOICE
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition;
+
+if (SpeechRecognition) {
+  recognition = new SpeechRecognition();
+  recognition.continuous = false;
+  recognition.lang = 'en-US';
+  recognition.interimResults = false;
+
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    userInput.value = transcript;
+    setMode('text');
+    sendMessage();
+  };
+
+  recognition.onerror = () => {
+    setAgentState('standby');
+    document.getElementById('voiceBtn').textContent = '🎤 RETRY VOICE';
+  };
+
+  recognition.onend = () => {
+    if (currentMode === 'voice') setAgentState('standby');
+  };
+}
+
+function toggleVoice() {
+  if (!recognition) {
+    alert('Voice recognition not supported in this browser. Please use text mode.');
+    return;
+  }
+  setAgentState('listening');
+  const btn = document.getElementById('voiceBtn');
+  btn.textContent = '📡 LISTENING...';
+  btn.classList.add('listening');
+  recognition.start();
+  setTimeout(() => {
+    btn.textContent = '🎤 HOLD TO SPEAK';
+    btn.classList.remove('listening');
+  }, 5000);
+}
+
+// ── HERO ORBIT DOTS
+const orbitContainer = document.getElementById('orbitContainer');
+const orbits = [
+  { radius: 148, size: 6, speed: 6, color: 'var(--cyan)', delay: 0 },
+  { radius: 118, size: 5, speed: 9, color: 'var(--red)', delay: -3 },
+  { radius: 90,  size: 4, speed: 5, color: 'var(--green)', delay: -1 },
+];
+
+orbits.forEach(o => {
+  const dot = document.createElement('div');
+  dot.style.cssText = `
+    position: absolute;
+    width: ${o.size}px;
+    height: ${o.size}px;
+    border-radius: 50%;
+    background: ${o.color};
+    box-shadow: 0 0 10px ${o.color};
+    top: 50%;
+    left: 50%;
+    margin-top: -${o.size/2}px;
+    margin-left: -${o.size/2}px;
+    animation: orbitDot${Math.round(o.radius)} ${o.speed}s linear ${o.delay}s infinite;
+  `;
+  const styleEl = document.createElement('style');
+  const r = o.radius;
+  styleEl.textContent = `
+    @keyframes orbitDot${Math.round(r)} {
+      from { transform: rotate(0deg) translateX(${r}px) rotate(0deg); }
+      to   { transform: rotate(360deg) translateX(${r}px) rotate(-360deg); }
+    }
+  `;
+  document.head.appendChild(styleEl);
+  orbitContainer.appendChild(dot);
+});
+</script>
+</body>
+</html>
