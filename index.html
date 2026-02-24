@@ -28,7 +28,7 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--black);
   color: var(--white);
-  font-family: 'Barlow', Arial, sans-serif;
+  font-family: 'Barlow', sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
@@ -49,7 +49,7 @@ body {
 .grid-bg i:first-child { border-left: 1px solid var(--grid); }
 
 /* PAGE SYSTEM */
-.page { display: none; }
+.page { display: none; } /* pages hidden by default */
 .page.active { display: block; }
 
 /* ━━━━━ NAV ━━━━━ */
@@ -75,7 +75,7 @@ nav {
 }
 
 .nav-brand {
-  font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+  font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700;
   font-size: 21px;
   letter-spacing: 4px;
@@ -91,7 +91,7 @@ nav {
 }
 
 .nav-link {
-  font-family: 'Space Mono', 'Courier New', monospace;
+  font-family: 'Space Mono', monospace;
   font-size: 9px;
   letter-spacing: 2px;
   color: rgba(255,255,255,0.4);
@@ -104,7 +104,7 @@ nav {
 .nav-link:hover, .nav-link.active { color: var(--white); }
 
 .nav-cta {
-  font-family: 'Space Mono', 'Courier New', monospace;
+  font-family: 'Space Mono', monospace;
   font-size: 10px;
   letter-spacing: 2px;
   color: var(--red);
@@ -131,7 +131,7 @@ nav {
 }
 
 .hero-eyebrow {
-  font-family: 'Space Mono', 'Courier New', monospace;
+  font-family: 'Space Mono', monospace;
   font-size: 10px;
   letter-spacing: 5px;
   color: var(--red);
@@ -140,7 +140,7 @@ nav {
 }
 
 .hero-title {
-  font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+  font-family: 'Barlow Condensed', sans-serif;
   font-weight: 900;
   font-size: clamp(72px, 18vw, 128px);
   line-height: 0.9;
@@ -166,7 +166,7 @@ nav {
   max-width: 600px;
   background: var(--red);
   color: var(--white);
-  font-family: 'Space Mono', 'Courier New', monospace;
+  font-family: 'Space Mono', monospace;
   font-size: 12px;
   letter-spacing: 3px;
   padding: 22px 40px;
@@ -191,7 +191,7 @@ nav {
   pointer-events: none;
 }
 .scroll-hint span {
-  font-family: 'Barlow', Arial, sans-serif;
+  font-family: 'Barlow', sans-serif;
   font-size: 12px;
   color: rgba(255,255,255,0.2);
   letter-spacing: 1px;
@@ -213,7 +213,7 @@ nav {
 }
 
 .section-label {
-  font-family: 'Space Mono', 'Courier New', monospace;
+  font-family: 'Space Mono', monospace;
   font-size: 10px;
   letter-spacing: 4px;
   color: var(--red);
@@ -222,7 +222,7 @@ nav {
 }
 
 .mission-title {
-  font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+  font-family: 'Barlow Condensed', sans-serif;
   font-weight: 900;
   font-size: clamp(52px, 13vw, 88px);
   line-height: 0.93;
@@ -253,7 +253,7 @@ nav {
 .stat-block:last-child { border-bottom: none; }
 
 .stat-num {
-  font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+  font-family: 'Barlow Condensed', sans-serif;
   font-weight: 900;
   font-size: clamp(88px, 22vw, 130px);
   line-height: 1;
@@ -262,7 +262,7 @@ nav {
 }
 
 .stat-lbl {
-  font-family: 'Space Mono', 'Courier New', monospace;
+  font-family: 'Space Mono', monospace;
   font-size: 10px;
   letter-spacing: 4px;
   color: var(--gray);
@@ -290,7 +290,7 @@ nav {
 .how-header .section-label { padding-top: 12px; margin-bottom: 0; flex-shrink: 0; }
 
 .how-title {
-  font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+  font-family: 'Barlow Condensed', sans-serif;
   font-weight: 900;
   font-size: clamp(60px, 14vw, 100px);
   line-height: 0.91;
@@ -314,7 +314,7 @@ nav {
 .step:nth-child(4)          { border-bottom: none; }
 
 .step-num {
-  font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+  font-family: 'Barlow Condensed', sans-serif;
   font-weight: 900;
   font-size: 80px;
   color: rgba(180,20,20,0.18);
@@ -323,7 +323,7 @@ nav {
 }
 
 .step h3 {
-  font-family: 'Barlow', Arial, sans-serif;
+  font-family: 'Barlow', sans-serif;
   font-weight: 700;
   font-size: 18px;
   margin-bottom: 14px;
@@ -347,7 +347,7 @@ nav {
 }
 
 .agent-title {
-  font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+  font-family: 'Barlow Condensed', sans-serif;
   font-weight: 900;
   font-size: clamp(64px, 16vw, 108px);
   line-height: 0.91;
@@ -388,7 +388,7 @@ nav {
 }
 
 .chat-topbar-label {
-  font-family: 'Space Mono', 'Courier New', monospace;
+  font-family: 'Space Mono', monospace;
   font-size: 9px;
   letter-spacing: 3px;
   color: rgba(255,255,255,0.35);
@@ -414,7 +414,7 @@ nav {
   background: var(--black3);
   border: 1px solid var(--border);
   display: flex; align-items: center; justify-content: center;
-  font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+  font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700; font-size: 15px;
   flex-shrink: 0;
 }
@@ -454,7 +454,7 @@ nav {
   border: none;
   outline: none;
   color: var(--white);
-  font-family: 'Barlow', Arial, sans-serif;
+  font-family: 'Barlow', sans-serif;
   font-size: 15px;
   padding: 18px 20px;
   resize: none;
@@ -467,7 +467,7 @@ nav {
   background: var(--red);
   border: none;
   color: var(--white);
-  font-family: 'Space Mono', 'Courier New', monospace;
+  font-family: 'Space Mono', monospace;
   font-size: 11px;
   letter-spacing: 2px;
   padding: 0 22px;
@@ -489,7 +489,7 @@ nav {
   background: var(--black);
 }
 .footer-brand {
-  font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+  font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700;
   font-size: 18px;
   letter-spacing: 6px;
@@ -497,7 +497,7 @@ nav {
   margin-bottom: 10px;
 }
 .footer-copy {
-  font-family: 'Space Mono', 'Courier New', monospace;
+  font-family: 'Space Mono', monospace;
   font-size: 9px;
   letter-spacing: 2px;
   color: rgba(255,255,255,0.13);
@@ -514,7 +514,7 @@ nav {
 }
 
 .big-title {
-  font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+  font-family: 'Barlow Condensed', sans-serif;
   font-weight: 900;
   font-size: clamp(60px, 15vw, 104px);
   line-height: 0.91;
@@ -535,7 +535,7 @@ nav {
   display: inline-block;
   background: var(--red);
   color: var(--white);
-  font-family: 'Space Mono', 'Courier New', monospace;
+  font-family: 'Space Mono', monospace;
   font-size: 10px;
   letter-spacing: 2px;
   padding: 15px 28px;
@@ -551,7 +551,7 @@ nav {
   display: inline-block;
   background: transparent;
   color: var(--red);
-  font-family: 'Space Mono', 'Courier New', monospace;
+  font-family: 'Space Mono', monospace;
   font-size: 10px;
   letter-spacing: 2px;
   padding: 15px 28px;
@@ -580,7 +580,7 @@ nav {
 .pipe-step:last-child { border-bottom: none; }
 
 .pipe-num {
-  font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+  font-family: 'Barlow Condensed', sans-serif;
   font-weight: 900;
   font-size: 56px;
   color: rgba(230,32,32,0.18);
@@ -590,7 +590,7 @@ nav {
 }
 
 .pipe-content h3 {
-  font-family: 'Barlow', Arial, sans-serif;
+  font-family: 'Barlow', sans-serif;
   font-weight: 700;
   font-size: 18px;
   margin-bottom: 10px;
@@ -642,7 +642,7 @@ nav {
 
 .dc-icon { font-size: 26px; margin-bottom: 12px; display: block; }
 .dc-name {
-  font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+  font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700;
   font-size: 20px;
   letter-spacing: 1px;
@@ -657,7 +657,7 @@ nav {
 }
 .dc-tags { display: flex; flex-wrap: wrap; gap: 5px; }
 .dc-tag {
-  font-family: 'Space Mono', 'Courier New', monospace;
+  font-family: 'Space Mono', monospace;
   font-size: 7px;
   letter-spacing: 1px;
   padding: 4px 7px;
@@ -690,7 +690,7 @@ nav {
   width: 52px; height: 52px;
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+  font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700; font-size: 20px;
   margin-bottom: 12px;
 }
@@ -700,7 +700,7 @@ nav {
 .av-o { background: rgba(255,140,66,0.1); border: 1px solid rgba(255,140,66,0.3); color: #ff8c42; }
 
 .pc-name {
-  font-family: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+  font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700;
   font-size: 22px;
   letter-spacing: 1px;
@@ -708,14 +708,14 @@ nav {
   margin-bottom: 4px;
 }
 .pc-role {
-  font-family: 'Space Mono', 'Courier New', monospace;
+  font-family: 'Space Mono', monospace;
   font-size: 9px;
   letter-spacing: 2px;
   color: var(--red);
   margin-bottom: 2px;
 }
 .pc-school {
-  font-family: 'Space Mono', 'Courier New', monospace;
+  font-family: 'Space Mono', monospace;
   font-size: 8px;
   letter-spacing: 1px;
   color: rgba(255,255,255,0.25);
@@ -799,6 +799,13 @@ nav {
   .site-footer { padding: 60px 80px; }
 }
 </style>
+
+<style>
+/* EMERGENCY VISIBILITY - override everything */
+#page-home { display: block !important; }
+.hero-eyebrow, .hero-title, .hero-body, .hero-btn { opacity: 1 !important; animation: none !important; }
+.reveal { opacity: 1 !important; transform: none !important; }
+</style>
 </head>
 <body>
 
@@ -833,7 +840,7 @@ nav {
 <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
      HOME PAGE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
-<div class="page active" id="page-home">
+<div class="page active" id="page-home" style="display:block!important;">
 
   <section class="hero">
     <p class="hero-eyebrow">HBCU INNOVATION NETWORK</p>
@@ -847,4 +854,10 @@ nav {
     <div class="scroll-hint">
       <span>Scroll</span>
       <div class="scroll-line"></div>
-   
+    </div>
+  </section>
+
+  <section class="mission reveal">
+    <span class="section-label">OUR MISSION</span>
+    <h2 class="mission-title">ELITE MINDS.<br>GLOBAL SCALE.</h2>
+    <p class="mission-body">Bring together elite HBCU 
