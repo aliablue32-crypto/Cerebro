@@ -16,7 +16,11 @@ const sessions    = {};
 // ─────────────────────────────────────────
 // MIDDLEWARE
 // ─────────────────────────────────────────
-app.use(cors());
+app.use(cors({
+  origin: ['https://cerebrounited.netlify.app', 'http://localhost:3000'],
+  methods: ['GET', 'POST', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'x-admin-token']
+}));
 app.use(express.json({ limit: '2mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
